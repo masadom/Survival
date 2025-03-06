@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerBehaviour : MonoBehaviour
 {
+    Camera cam;
     public float movementSpeed = 5f;
     private Rigidbody2D rb;
 
@@ -22,6 +23,7 @@ public class PlayerBehaviour : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        cam = Camera.main;
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         rb = GetComponent<Rigidbody2D>();
@@ -38,7 +40,34 @@ public class PlayerBehaviour : MonoBehaviour
     {
         movementDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector3 mousePos3D = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.z * -1));
+            Vector2 mousePos = new Vector2(mousePos3D.x, mousePos3D.y);
+
+            float radius = 0.2f;
+            Collider2D hit = Physics2D.OverlapCircle(mousePos, radius);
+
+            if (hit != null)
+            {
+                Interactible interactible = hit.GetComponent<Interactible>();
+
+                if (interactible != null)
+                {
+                    Debug.Log($"Interakcja z: {interactible.name}");
+                    interactible.Focused(gameObject.transform);
+                }
+            }
+            // Nic siê nie dzieje, jeœli hit jest null (czyli nie trafiono w ¿aden obiekt)
+        }
     }
+
+
+
+
+
+
+
 
     private void FixedUpdate()
     {

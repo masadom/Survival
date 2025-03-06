@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class HealthBarScript : MonoBehaviour
 {
-    Slider slider;
+    public Slider slider;
 
     private void Start()
     {
