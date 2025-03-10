@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
+
 
 public class PlayerBehaviour : MonoBehaviour
 {
@@ -38,6 +40,12 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            movementDirection = Vector2.zero;
+            return;
+
+        }
         movementDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
         if (Input.GetMouseButtonDown(0))
