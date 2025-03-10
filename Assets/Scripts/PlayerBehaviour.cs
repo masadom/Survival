@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -40,11 +41,10 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (IsPointerOverUIElement() && !IsPointerOverHealthBar())
         {
             movementDirection = Vector2.zero;
             return;
-
         }
         movementDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
@@ -72,7 +72,33 @@ public class PlayerBehaviour : MonoBehaviour
 
 
 
+    // Sprawdza, czy kursor jest nad UI
+    private bool IsPointerOverUIElement()
+    {
+        return EventSystem.current.IsPointerOverGameObject();
+    }
 
+    // Sprawdza, czy kursor jest nad healthBarem
+    private bool IsPointerOverHealthBar()
+    {
+        PointerEventData eventData = new PointerEventData(EventSystem.current)
+        {
+            position = Input.mousePosition
+        };
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+
+        foreach (RaycastResult result in results)
+        {
+            if (result.gameObject.CompareTag("healthBar")) // Upewnij siê, ¿e healthBar ma przypisany tag w Unity
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 
 
