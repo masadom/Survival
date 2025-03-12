@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - healthBar
   layers:
   - Default
   - TransparentFX
@@ -49,6 +50,9 @@ TagManager:
     locked: 0
   - name: Layer 3
     uniqueID: 4189426099
+    locked: 0
+  - name: UI
+    uniqueID: 3937776783
     locked: 0
   m_RenderingLayers:
   - Default

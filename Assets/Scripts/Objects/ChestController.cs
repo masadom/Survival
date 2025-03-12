@@ -5,17 +5,19 @@ public class ChestController : Interactible
     int numberOfItems;
     public Item[] items;
     Item randomitem;
+    public Animator animator;
 
 
     public override void Interact()
     {
         base.Interact();
+        animator = gameObject.GetComponent<Animator>();
         Open();
     }
     void Open()
     {
-        gameObject.SetActive(false);
 
+        gameObject.SetActive(false);
         int ItemsListNumber = items.Length;
         Debug.Log(ItemsListNumber);
 
@@ -32,9 +34,11 @@ public class ChestController : Interactible
 
         gameObject.GetComponent<Collider2D>().enabled = false;
         gameObject.SetActive(true);
+        animator.SetTrigger("chestOpened");
+
     }
 
 
-    
+
 
 }
