@@ -22,6 +22,8 @@ public class PlayerBehaviour : MonoBehaviour
     bool isFacingRight = true;
     private SpriteRenderer spriteRenderer;
 
+    public GameObject attackPoint;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -70,7 +72,21 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
+    public void GetDamage(int amount)
+    {
+        currentHealth-=amount;
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
 
+    void Die()
+    {
+        Debug.Log("die");
+    }
+    
+       
 
     // Sprawdza, czy kursor jest nad UI
     private bool IsPointerOverUIElement()
@@ -132,8 +148,12 @@ public class PlayerBehaviour : MonoBehaviour
     {
         spriteRenderer.flipX = !spriteRenderer.flipX;
         isFacingRight = !isFacingRight;
-
+        float xValue = attackPoint.transform.localPosition.x * -1;
+        float yValue = attackPoint.transform.localPosition.y;
+        float zValue = attackPoint.transform.localPosition.z;
+        attackPoint.transform.localPosition = new Vector3(xValue, yValue, zValue);
     }
+
 
 
 

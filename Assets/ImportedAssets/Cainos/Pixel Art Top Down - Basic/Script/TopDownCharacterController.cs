@@ -11,7 +11,6 @@ namespace Cainos.PixelArtTopDown_Basic
     {
         public float speed;
         float horizontalInput;
-        bool isFacingRight = true;
 
         Rigidbody2D rb;
 

@@ -1,11 +1,16 @@
 using System.Collections;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class EnemyController : MonoBehaviour
 {
-    Animator animator;
+    public Animator animator;
     public int maxHealth = 100;
     public int currentHealth;
+    public float speed;
+    public Transform target;
+    public GameObject player;
+
+    public float attackRange = 3;
 
     public HealthBarScript healthBar;
 
@@ -15,9 +20,10 @@ public class Enemy : MonoBehaviour
     private Color originalColor;
 
 
-    void Start()
+    virtual public void Start()
     {
-
+        player = GameObject.FindGameObjectWithTag("Player");
+        target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         animator = GetComponent<Animator>();
         currentHealth = maxHealth;
 
@@ -32,22 +38,38 @@ public class Enemy : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    virtual public void Update()
     {
-        
+        if (Vector2.Distance(transform.position, target.position) > attackRange)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+            animator.SetFloat("xVelocity", 1);
+
+        }
+        else 
+        {
+            animator.SetFloat("xVelocity", 0);
+
+            Attack(); 
+        }
     }
 
-    public void TakeDamage(int damage)
+    virtual public void Attack()
+    {
+        Debug.Log("attack");
+    }
+
+    virtual public void TakeDamage(int damage)
     {
         currentHealth -= damage;
         animator.SetTrigger("Hitted");
         healthBar.SetHealth(currentHealth);
-        if (currentHealth <= 0) 
+        if (currentHealth <= 0)
         {
             Die();
         }
-    }
-    void Die()
+    } 
+    virtual public void Die()
     {
         healthBar.SetHealth(0);
         Debug.Log("die");
@@ -55,7 +77,6 @@ public class Enemy : MonoBehaviour
 
         GetComponent<Collider2D>().enabled = false;
         this.enabled = false;
-        FadeOut();
     }
 
 
